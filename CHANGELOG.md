@@ -1,0 +1,18 @@
+# Changelog
+
+All notable changes to this project are documented here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
+
+## [Unreleased]
+
+### Added
+
+- Project foundation: NestJS 12, PostgreSQL 17 and Docker Compose.
+- Multi-tenant data model: tenants, users, units, services, professionals, schedules, time off, bookings, class sessions, waitlist entries and outbox events.
+- Booking constraints in SQL: a professional cannot hold two overlapping active bookings, and ranges cannot be empty.
+- Authentication with JWT access tokens and rotating refresh tokens stored in PostgreSQL.
+- Role-based authorization (`admin`, `professional`, `client`): everyone signed in can read, only admins can write.
+- `POST /auth/sign-up` creates a tenant and its first admin. `POST /members` lets an admin add users.
+- CRUD endpoints for units, services and professionals, scoped to the caller's tenant.
+- Prometheus metrics at `GET /metrics`: HTTP request count and duration by method, route and status, plus Node.js process metrics.
+- Prometheus service in Docker Compose, scraping the API every 15 seconds.
+- Drizzle migrations, run by a one-shot `migrate` service in Compose.

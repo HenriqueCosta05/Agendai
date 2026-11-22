@@ -38,8 +38,10 @@ When a task depends on how the app behaves in production - an error users hit, a
 - The Observe MCP server answers those questions directly: errors with their traces and logs, slow operations, jobs, and what a release changed (`find_regressions`, `diff_release`). It is included on the Pro plan and above. In Claude Code: `claude mcp add observe --transport http https://observe-api.nestjs.com/mcp`, and the client opens a browser to approve. Other clients: https://www.observe.nestjs.com/documentation/mcp
 - Without it, the user can open the request or error in the Observe dashboard and click **Copy agent prompt**, which hands over that page's trace, stack and logs as text.
 
-## One-file layout
+## Feature-driven layout
 
-All the code is in `src/main.ts`. `nest generate` (for example `nest g resource users`) writes new files under `src/` and registers them in `AppModule` there. It writes spec files once `@nestjs/testing` is in `package.json`. When `src/main.ts` gets long, move `AppModule` to `src/app.module.ts`: `nest generate` uses a `*.module.ts` file when there is one.
+The code is organised by feature: `src/features/<feature>/` holds a feature's controller, service, schemas and module, and `src/shared/` holds config and the database schema. `src/app.module.ts` wires everything and `src/main.ts` only bootstraps. See `docs/architecture.md`.
+
+A new capability gets its own folder under `src/features/` and is added to `AppModule`. Tenant-owned queries must always filter by the caller's `tenantId`.
 
 This project is ESM: relative imports end in `.js`, and `__dirname` doesn't exist (use `import.meta.dirname`).
