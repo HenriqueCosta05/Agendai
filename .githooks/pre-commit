@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+set -eu
+
+cd "$(git rev-parse --show-toplevel)"
+
+node_works() { command -v node >/dev/null 2>&1 && node -v >/dev/null 2>&1; }
+
+if ! node_works; then
+  for dir in "$HOME"/.nvm/versions/node/v*/bin "$HOME/.volta/bin" "$HOME/.local/share/fnm/aliases/default/bin"; do
+    if [ -x "$dir/node" ] && PATH="$dir:$PATH" node_works; then
+      PATH="$dir:$PATH"
+      export PATH
+      break
+    fi
+  done
+fi
+
+if ! node_works; then
+  echo "pre-commit: no working node found in PATH; cannot run the quality gate." >&2
+  exit 1
+fi
+
+echo "pre-commit: running quality gate..."
+if ! npm run --silent gate; then
+  echo "pre-commit: quality gate failed. Fix the problems above, then commit again." >&2
+  exit 1
+fi

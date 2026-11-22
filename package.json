@@ -11,6 +11,7 @@
     "start": "nest start",
     "start:dev": "nest start --watch",
     "start:prod": "node dist/main",
+    "prepare": "git rev-parse --git-dir >/dev/null 2>&1 && git config core.hooksPath .githooks || true",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
     "lint": "eslint .",
