@@ -50,6 +50,12 @@ npm run start:dev -- --env-file .env
 | `npm run db:migrate` | apply pending migrations |
 | `npm run build` | compile to `dist/` |
 
+## Pre-commit hook
+
+`npm install` points Git at `.githooks/` (the `prepare` script sets `core.hooksPath`). Before every commit the hook runs `npm run gate`, and a failure blocks the commit. If `node` is not on the `PATH`, the hook looks for one under nvm, Volta or fnm.
+
+To activate it without reinstalling, run `npm run prepare`. To skip it once, use `git commit --no-verify`.
+
 ## Project layout
 
 The code is organised by feature. See [docs/architecture.md](docs/architecture.md).

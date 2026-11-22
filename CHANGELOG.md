@@ -16,3 +16,4 @@ All notable changes to this project are documented here. The format follows [Kee
 - Prometheus metrics at `GET /metrics`: HTTP request count and duration by method, route and status, plus Node.js process metrics.
 - Prometheus service in Docker Compose, scraping the API every 15 seconds.
 - Drizzle migrations, run by a one-shot `migrate` service in Compose.
+- Git pre-commit hook (`.githooks/pre-commit`) that runs the quality gate, installed by `npm install`.
