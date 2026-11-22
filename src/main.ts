@@ -1,31 +1,12 @@
-import { Controller, Get, Injectable, Module } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
-
-@Injectable()
-class AppService {
-  getHello(): string {
-    return 'Hello World!';
-  }
-}
-
-@Controller()
-class AppController {
-  constructor(private readonly appService: AppService) {}
-
-  @Get()
-  getHello(): string {
-    return this.appService.getHello();
-  }
-}
-
-@Module({
-  controllers: [AppController],
-  providers: [AppService],
-})
-class AppModule {}
+import { ConfigService } from '@nestjs/config';
+import { AppModule } from './app.module.js';
+import type { Env } from './shared/config/env.schema.js';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  await app.listen(process.env.PORT ?? 3000);
+  app.enableShutdownHooks();
+  const config = app.get<ConfigService<Env, true>>(ConfigService);
+  await app.listen(config.get('PORT', { infer: true }));
 }
 await bootstrap();
