@@ -15,7 +15,7 @@ const SENSITIVE_PATTERNS = [
   /[a-z]+:\/\/[^/\s:@]+:[^/\s@]{3,}@[^\s]+/i,
   /(password|passwd|pwd|secret|api[_-]?key|token|access[_-]?key)["'\s]*[:=]["'\s]*[A-Za-z0-9/+_.!@#$%^&*-]{8,}/i,
   /\b[0-9]{3}\.[0-9]{3}\.[0-9]{3}-[0-9]{2}\b/,
-  /\b([0-9]{4}[ -]?){3}[0-9]{4}\b/,
+  /\b[0-9]{4}[ -]?[0-9]{4}[ -]?[0-9]{4}[ -]?[0-9]{4}\b/,
 ];
 
 const { prompt = '' } = JSON.parse(readFileSync(0, 'utf8') || '{}');

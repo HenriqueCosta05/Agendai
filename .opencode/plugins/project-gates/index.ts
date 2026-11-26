@@ -80,10 +80,8 @@ function targetFiles(tool: string, value: unknown): string[] {
 }
 
 function filePath(input: Record<string, unknown>): string {
-  for (const key of ['path', 'filePath', 'file_path']) {
-    if (typeof input[key] === 'string') return input[key];
-  }
-  return '';
+  const candidates = [input.path, input.filePath, input.file_path];
+  return candidates.find((value): value is string => typeof value === 'string') ?? '';
 }
 
 function asRecord(value: unknown): Record<string, unknown> {

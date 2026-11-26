@@ -12,10 +12,10 @@ const name = basename(file);
 const findings = [];
 const add = (tag, line, msg) => findings.push(`[${tag}] ${rel(file)}${line ? `:${line}` : ''} ${msg}`);
 
-const lineNo = (index) => text.slice(0, index).split('\n').length;
 const scan = (tag, regex, msg) => {
-  const re = new RegExp(regex.source, regex.flags.includes('g') ? regex.flags : `${regex.flags}g`);
-  for (const m of text.matchAll(re)) add(tag, lineNo(m.index), msg);
+  text.split('\n').forEach((line, i) => {
+    if (regex.test(line)) add(tag, i + 1, msg);
+  });
 };
 
 const SECRET_PATTERNS = [
@@ -30,7 +30,7 @@ const SECRET_PATTERNS = [
 function reviewSecrets() {
   if (/\.(example|sample|md)$/.test(name) || /\.env\.example$/.test(name)) return;
   for (const [re, msg] of SECRET_PATTERNS) scan('security', re, msg);
-  if (/^\.env(\..+)?$/.test(name) && !/example|sample/.test(name)) {
+  if ((name === '.env' || (name.startsWith('.env.') && name.length > 5)) && !/example|sample/.test(name)) {
     add('security', 0, 'real .env file written by the agent; use .env.example with placeholders');
   }
 }
