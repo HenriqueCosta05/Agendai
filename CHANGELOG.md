@@ -18,4 +18,7 @@ All notable changes to this project are documented here. The format follows [Kee
 - Prometheus service in Docker Compose, scraping the API every 15 seconds.
 - NestJS Observe SDK (`@nestjs/observe`) registered in `AppModule` and passed to `NestFactory.create`. Keys come from `OBSERVE_APP_KEY` and `OBSERVE_APP_SECRET`.
 - Drizzle migrations, run by a one-shot `migrate` service in Compose.
-- Git pre-commit hook (`.githooks/pre-commit`) that runs the quality gate, installed by `npm install`.
+- Git pre-commit hook (`.githooks/pre-commit`) that regenerates the documentation, runs the quality gate and stages the generated docs, installed by `npm install`.
+- Documentation set in `docs/`: architecture, data model, authentication, API, operations, observability and development guides, plus generated endpoint, configuration and data-model references.
+- Archify diagrams in `docs/diagrams/`: system architecture, create-unit request, data model and module map, rendered to HTML and SVG by `npm run docs`.
+- `scripts/docs/check.mjs` (`npm run docs:check`), part of the gate, checks the Markdown pages for AI readability and common AI-writing tells.

@@ -1,29 +1,36 @@
+---
+description: How Agendai reports its health, with Prometheus metrics at /metrics and telemetry sent to NestJS Observe when keys are configured.
+---
+
 # Observability
 
-Two complementary layers:
+Agendai reports its behavior in two places. Prometheus metrics are served by the API itself. Traces, errors, logs and runtime metrics go to NestJS Observe, when the API has keys for it.
 
-- **NestJS Observe** (`@nestjs/observe`) sends traces, errors, logs and runtime metrics to [observe.nestjs.com](https://observe.nestjs.com). It is wired in `src/shared/observe/observe.ts`, registered in `AppModule` and passed to `NestFactory.create` in `src/main.ts`.
-- **Prometheus** metrics at `GET /metrics`, built with `@prometheus-io/client` (the successor of `prom-client`).
+## NestJS Observe
 
-To link the app to Observe, run `npx @nestjs/observe link` and approve the code in the browser. It writes `OBSERVE_APP_KEY` and `OBSERVE_APP_SECRET` to `.env`. Without them the API runs and sends nothing, and it logs a warning at startup. Production should get its own key pair, set through the environment rather than `.env`.
+The SDK, `@nestjs/observe`, is set up in `src/shared/observe/observe.ts`. `AppModule` registers it with the keys from the environment, and `src/main.ts` passes its instrument to `NestFactory.create`. The service identifier is `agendai-api`.
 
-## Metrics
+The SDK sends nothing until both `OBSERVE_APP_KEY` and `OBSERVE_APP_SECRET` are set. Without them the API logs a warning at startup and runs normally. To create the keys, run `npx @nestjs/observe link` and approve the code in the browser. The command writes both variables to `.env`. Give production its own key pair, and set it through the environment rather than a file.
+
+The Docker Compose file does not pass the keys to the `api` container. See [Operations](operations.md#telemetry-in-the-container).
+
+## Prometheus metrics
+
+The API exposes Prometheus metrics at `GET /metrics`, built with `@prometheus-io/client`, the successor of `prom-client`.
 
 | Metric | Type | Labels | Description |
 | --- | --- | --- | --- |
-| `agendai_http_requests_total` | counter | `method`, `route`, `status` | Requests handled. |
-| `agendai_http_request_duration_seconds` | histogram | `method`, `route`, `status` | Request duration. Buckets from 5 ms to 5 s. |
-| `agendai_process_*`, `agendai_nodejs_*` | various | none | Node.js defaults: CPU, memory, event loop lag, GC, handles. |
+| `agendai_http_requests_total` | Counter | `method`, `route`, `status` | Requests handled. |
+| `agendai_http_request_duration_seconds` | Histogram | `method`, `route`, `status` | Request duration, with buckets from 5 ms to 5 s. |
+| `agendai_process_*` and `agendai_nodejs_*` | Various | None | Node.js defaults: CPU, memory, event loop lag, garbage collection and handles. |
 
-Details:
+Some details matter when you read the numbers:
 
-- `route` is the route template (`/units/:id`), not the URL, so the number of label values stays bounded. Requests that match no route use `unmatched`.
-- A middleware records the metrics when the response finishes. Requests rejected by the auth guards (`401`, `403`) are counted too.
-- `GET /metrics` does not count itself.
+- `route` is the route template, such as `/units/:id`, not the URL. The number of label values stays bounded this way. A request that matches no route is counted under `unmatched`.
+- A middleware records each request when its response finishes. Requests refused by the guards, with status `401` or `403`, are counted too.
+- A scrape of `GET /metrics` does not count itself.
 
-## Running Prometheus
-
-`docker compose up` starts Prometheus on `http://localhost:9090`. It scrapes `api:3000/metrics` every 15 seconds, as set in `prometheus/prometheus.yml`.
+Prometheus runs in the Compose stack on `http://localhost:9090`. It scrapes `api:3000/metrics` every 15 seconds, as set in `prometheus/prometheus.yml`.
 
 Useful queries:
 
@@ -40,5 +47,4 @@ histogram_quantile(0.95, sum by (le, route) (rate(agendai_http_request_duration_
 
 ## Production notes
 
-- `/metrics` is public. Do not publish it on the internet: keep it on the internal network, or block the path at the reverse proxy.
-- Prometheus and the database ports are bound to `127.0.0.1` in `docker-compose.yml`.
+`/metrics` is public and has no authentication. Keep it on the internal network, or block the path at the reverse proxy. Prometheus and the database bind to `127.0.0.1` in `docker-compose.yml`, so they are not reachable from other machines. See [Operations](operations.md#exposure) for the API port.

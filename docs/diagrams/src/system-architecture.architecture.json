@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "Agendai system architecture",
+    "subtitle": "The containers that Docker Compose starts and the external services they reach",
+    "output": "docs/diagrams/system-architecture.html",
+    "locale": "en",
+    "quality_profile": "showcase"
+  },
+  "layout": { "mode": "auto" },
+  "components": [
+    { "id": "client", "type": "external", "label": "API client", "sublabel": "Web, mobile or curl" },
+    { "id": "api", "type": "backend", "label": "API", "sublabel": "NestJS 12 on Express, port 3000" },
+    { "id": "migrate", "type": "backend", "label": "migrate", "sublabel": "drizzle-kit, runs once" },
+    { "id": "db", "type": "database", "label": "PostgreSQL", "sublabel": "Version 17.12, port 5432" },
+    { "id": "prometheus", "type": "cloud", "label": "Prometheus", "sublabel": "Scrapes every 15 seconds" },
+    { "id": "observe", "type": "external", "label": "NestJS Observe", "sublabel": "Hosted collector, when keys are set" }
+  ],
+  "boundaries": [
+    { "kind": "security-group", "label": "Docker Compose network", "wraps": ["api", "migrate", "db", "prometheus"] }
+  ],
+  "connections": [
+    { "id": "client-api", "from": "client", "to": "api", "label": "HTTP JSON with bearer token", "variant": "emphasis" },
+    { "id": "api-db", "from": "api", "to": "db", "label": "SQL through Drizzle" },
+    { "id": "migrate-db", "from": "migrate", "to": "db", "label": "apply migrations", "variant": "dashed" },
+    { "id": "scrape", "from": "prometheus", "to": "api", "label": "GET /metrics", "variant": "dashed" },
+    { "id": "telemetry", "from": "api", "to": "observe", "label": "traces, logs and metrics", "variant": "dashed" }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "Startup order",
+      "items": [
+        "The database must be healthy before migrate runs",
+        "migrate applies the files in drizzle/ and exits",
+        "The API starts only after migrate succeeds"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "Tenancy",
+      "items": [
+        "Business tables carry tenant_id",
+        "Every query filters by the tenant of the signed-in user",
+        "The request body never chooses the tenant"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "Exposure",
+      "items": [
+        "The database and Prometheus bind to 127.0.0.1",
+        "The API publishes port 3000 on all interfaces",
+        "GET /metrics is public, so keep it on the internal network"
+      ]
+    }
+  ]
+}

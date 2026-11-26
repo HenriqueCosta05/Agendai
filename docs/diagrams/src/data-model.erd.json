@@ -1,0 +1,570 @@
+{
+  "schema_version": 1,
+  "diagram_type": "erd",
+  "meta": {
+    "title": "Data model",
+    "subtitle": "Generated from src/shared/database/schema.ts",
+    "output": "docs/diagrams/data-model.html",
+    "locale": "en",
+    "quality_profile": "standard",
+    "feedback_links": false
+  },
+  "layout": {
+    "mode": "grid",
+    "gapX": 56,
+    "gapY": 36
+  },
+  "entities": [
+    {
+      "id": "bookings",
+      "label": "bookings",
+      "tag": "bookings",
+      "row": 0,
+      "col": 2,
+      "attributes": [
+        {
+          "name": "id",
+          "type": "uuid",
+          "key": "pk"
+        },
+        {
+          "name": "tenant_id",
+          "type": "uuid",
+          "key": "fk",
+          "references": "tenants.id"
+        },
+        {
+          "name": "professional_id",
+          "type": "uuid",
+          "key": "fk",
+          "references": "professionals.id"
+        },
+        {
+          "name": "client_id",
+          "type": "uuid",
+          "key": "fk",
+          "references": "users.id"
+        },
+        {
+          "name": "period",
+          "type": "tstzrange"
+        },
+        {
+          "name": "status",
+          "type": "booking_status"
+        },
+        {
+          "name": "idempotency_key",
+          "type": "text"
+        },
+        {
+          "name": "created_at",
+          "type": "timestamptz"
+        }
+      ]
+    },
+    {
+      "id": "class_sessions",
+      "label": "class_sessions",
+      "tag": "classes",
+      "row": 0,
+      "col": 3,
+      "attributes": [
+        {
+          "name": "id",
+          "type": "uuid",
+          "key": "pk"
+        },
+        {
+          "name": "tenant_id",
+          "type": "uuid",
+          "key": "fk",
+          "references": "tenants.id"
+        },
+        {
+          "name": "service_id",
+          "type": "uuid",
+          "key": "fk",
+          "references": "services.id"
+        },
+        {
+          "name": "period",
+          "type": "tstzrange"
+        },
+        {
+          "name": "capacity",
+          "type": "integer"
+        }
+      ]
+    },
+    {
+      "id": "outbox_events",
+      "label": "outbox_events",
+      "tag": "platform",
+      "row": 0,
+      "col": 4,
+      "attributes": [
+        {
+          "name": "id",
+          "type": "uuid",
+          "key": "pk"
+        },
+        {
+          "name": "tenant_id",
+          "type": "uuid",
+          "key": "fk",
+          "references": "tenants.id"
+        },
+        {
+          "name": "type",
+          "type": "text"
+        },
+        {
+          "name": "payload",
+          "type": "jsonb"
+        },
+        {
+          "name": "status",
+          "type": "outbox_status"
+        },
+        {
+          "name": "attempts",
+          "type": "integer"
+        },
+        {
+          "name": "created_at",
+          "type": "timestamptz"
+        }
+      ]
+    },
+    {
+      "id": "professionals",
+      "label": "professionals",
+      "tag": "scheduling setup",
+      "row": 2,
+      "col": 1,
+      "attributes": [
+        {
+          "name": "id",
+          "type": "uuid",
+          "key": "pk"
+        },
+        {
+          "name": "tenant_id",
+          "type": "uuid",
+          "key": "fk",
+          "references": "tenants.id"
+        },
+        {
+          "name": "user_id",
+          "type": "uuid",
+          "key": "fk",
+          "references": "users.id"
+        },
+        {
+          "name": "unit_id",
+          "type": "uuid",
+          "key": "fk",
+          "references": "units.id"
+        },
+        {
+          "name": "created_at",
+          "type": "timestamptz"
+        }
+      ]
+    },
+    {
+      "id": "refresh_tokens",
+      "label": "refresh_tokens",
+      "tag": "platform",
+      "row": 1,
+      "col": 4,
+      "attributes": [
+        {
+          "name": "id",
+          "type": "text",
+          "key": "pk"
+        },
+        {
+          "name": "family_id",
+          "type": "text"
+        },
+        {
+          "name": "user_id",
+          "type": "text"
+        },
+        {
+          "name": "created_at",
+          "type": "timestamptz"
+        },
+        {
+          "name": "expires_at",
+          "type": "timestamptz"
+        },
+        {
+          "name": "family_expires_at",
+          "type": "timestamptz"
+        },
+        {
+          "name": "used_at",
+          "type": "timestamptz"
+        },
+        {
+          "name": "revoked",
+          "type": "boolean"
+        },
+        {
+          "name": "claims",
+          "type": "jsonb"
+        }
+      ]
+    },
+    {
+      "id": "schedules",
+      "label": "schedules",
+      "tag": "scheduling setup",
+      "row": 3,
+      "col": 1,
+      "attributes": [
+        {
+          "name": "id",
+          "type": "uuid",
+          "key": "pk"
+        },
+        {
+          "name": "tenant_id",
+          "type": "uuid",
+          "key": "fk",
+          "references": "tenants.id"
+        },
+        {
+          "name": "professional_id",
+          "type": "uuid",
+          "key": "fk",
+          "references": "professionals.id"
+        },
+        {
+          "name": "weekday",
+          "type": "smallint"
+        },
+        {
+          "name": "start_time",
+          "type": "time"
+        },
+        {
+          "name": "end_time",
+          "type": "time"
+        }
+      ]
+    },
+    {
+      "id": "services",
+      "label": "services",
+      "tag": "scheduling setup",
+      "row": 1,
+      "col": 1,
+      "attributes": [
+        {
+          "name": "id",
+          "type": "uuid",
+          "key": "pk"
+        },
+        {
+          "name": "tenant_id",
+          "type": "uuid",
+          "key": "fk",
+          "references": "tenants.id"
+        },
+        {
+          "name": "name",
+          "type": "text"
+        },
+        {
+          "name": "duration_min",
+          "type": "integer"
+        },
+        {
+          "name": "buffer_min",
+          "type": "integer"
+        },
+        {
+          "name": "capacity",
+          "type": "integer"
+        },
+        {
+          "name": "created_at",
+          "type": "timestamptz"
+        }
+      ]
+    },
+    {
+      "id": "tenants",
+      "label": "tenants",
+      "tag": "tenancy and people",
+      "row": 0,
+      "col": 0,
+      "attributes": [
+        {
+          "name": "id",
+          "type": "uuid",
+          "key": "pk"
+        },
+        {
+          "name": "name",
+          "type": "text"
+        },
+        {
+          "name": "created_at",
+          "type": "timestamptz"
+        }
+      ]
+    },
+    {
+      "id": "time_off",
+      "label": "time_off",
+      "tag": "scheduling setup",
+      "row": 4,
+      "col": 1,
+      "attributes": [
+        {
+          "name": "id",
+          "type": "uuid",
+          "key": "pk"
+        },
+        {
+          "name": "tenant_id",
+          "type": "uuid",
+          "key": "fk",
+          "references": "tenants.id"
+        },
+        {
+          "name": "professional_id",
+          "type": "uuid",
+          "key": "fk",
+          "references": "professionals.id"
+        },
+        {
+          "name": "period",
+          "type": "tstzrange"
+        }
+      ]
+    },
+    {
+      "id": "units",
+      "label": "units",
+      "tag": "scheduling setup",
+      "row": 0,
+      "col": 1,
+      "attributes": [
+        {
+          "name": "id",
+          "type": "uuid",
+          "key": "pk"
+        },
+        {
+          "name": "tenant_id",
+          "type": "uuid",
+          "key": "fk",
+          "references": "tenants.id"
+        },
+        {
+          "name": "name",
+          "type": "text"
+        },
+        {
+          "name": "timezone",
+          "type": "text"
+        },
+        {
+          "name": "created_at",
+          "type": "timestamptz"
+        }
+      ]
+    },
+    {
+      "id": "users",
+      "label": "users",
+      "tag": "tenancy and people",
+      "row": 1,
+      "col": 0,
+      "attributes": [
+        {
+          "name": "id",
+          "type": "uuid",
+          "key": "pk"
+        },
+        {
+          "name": "tenant_id",
+          "type": "uuid",
+          "key": "fk",
+          "references": "tenants.id"
+        },
+        {
+          "name": "name",
+          "type": "text"
+        },
+        {
+          "name": "email",
+          "type": "text"
+        },
+        {
+          "name": "password_hash",
+          "type": "text"
+        },
+        {
+          "name": "role",
+          "type": "user_role"
+        },
+        {
+          "name": "created_at",
+          "type": "timestamptz"
+        }
+      ]
+    },
+    {
+      "id": "waitlist_entries",
+      "label": "waitlist_entries",
+      "tag": "classes",
+      "row": 1,
+      "col": 3,
+      "attributes": [
+        {
+          "name": "id",
+          "type": "uuid",
+          "key": "pk"
+        },
+        {
+          "name": "tenant_id",
+          "type": "uuid",
+          "key": "fk",
+          "references": "tenants.id"
+        },
+        {
+          "name": "session_id",
+          "type": "uuid",
+          "key": "fk",
+          "references": "class_sessions.id"
+        },
+        {
+          "name": "client_id",
+          "type": "uuid",
+          "key": "fk",
+          "references": "users.id"
+        },
+        {
+          "name": "position",
+          "type": "integer"
+        },
+        {
+          "name": "offered_at",
+          "type": "timestamptz"
+        },
+        {
+          "name": "expires_at",
+          "type": "timestamptz"
+        }
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "id": "bookings_professional_id",
+      "from": "bookings",
+      "to": "professionals",
+      "label": "professional_id",
+      "fromCardinality": "many",
+      "toCardinality": "one",
+      "fromOptional": false
+    },
+    {
+      "id": "bookings_client_id",
+      "from": "bookings",
+      "to": "users",
+      "label": "client_id",
+      "fromCardinality": "many",
+      "toCardinality": "one",
+      "fromOptional": false
+    },
+    {
+      "id": "class_sessions_service_id",
+      "from": "class_sessions",
+      "to": "services",
+      "label": "service_id",
+      "fromCardinality": "many",
+      "toCardinality": "one",
+      "fromOptional": false
+    },
+    {
+      "id": "professionals_user_id",
+      "from": "professionals",
+      "to": "users",
+      "label": "user_id",
+      "fromCardinality": "many",
+      "toCardinality": "one",
+      "fromOptional": false
+    },
+    {
+      "id": "professionals_unit_id",
+      "from": "professionals",
+      "to": "units",
+      "label": "unit_id",
+      "fromCardinality": "many",
+      "toCardinality": "one",
+      "fromOptional": false
+    },
+    {
+      "id": "schedules_professional_id",
+      "from": "schedules",
+      "to": "professionals",
+      "label": "professional_id",
+      "fromCardinality": "many",
+      "toCardinality": "one",
+      "fromOptional": false
+    },
+    {
+      "id": "time_off_professional_id",
+      "from": "time_off",
+      "to": "professionals",
+      "label": "professional_id",
+      "fromCardinality": "many",
+      "toCardinality": "one",
+      "fromOptional": false
+    },
+    {
+      "id": "waitlist_entries_session_id",
+      "from": "waitlist_entries",
+      "to": "class_sessions",
+      "label": "session_id",
+      "fromCardinality": "many",
+      "toCardinality": "one",
+      "fromOptional": false
+    },
+    {
+      "id": "waitlist_entries_client_id",
+      "from": "waitlist_entries",
+      "to": "users",
+      "label": "client_id",
+      "fromCardinality": "many",
+      "toCardinality": "one",
+      "fromOptional": false
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "Tenancy",
+      "items": [
+        "Business tables reference tenants.id through tenant_id",
+        "Those tenant edges are left out of the picture to keep it readable"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "Beyond the schema",
+      "items": [
+        "bookings has an exclusion constraint that Drizzle cannot express",
+        "It lives in the booking_constraints migration"
+      ]
+    }
+  ]
+}

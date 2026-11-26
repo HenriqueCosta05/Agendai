@@ -20,8 +20,16 @@ if ! node_works; then
   exit 1
 fi
 
+echo "pre-commit: regenerating documentation..."
+if ! npm run --silent docs; then
+  echo "pre-commit: documentation generation failed. Fix the problems above, then commit again." >&2
+  exit 1
+fi
+
 echo "pre-commit: running quality gate..."
 if ! npm run --silent gate; then
   echo "pre-commit: quality gate failed. Fix the problems above, then commit again." >&2
   exit 1
 fi
+
+git add docs/generated docs/diagrams

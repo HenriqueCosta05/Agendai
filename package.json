@@ -21,7 +21,9 @@
     "comments": "node scripts/check-comments.mjs",
     "comments:migrate": "node scripts/check-comments.mjs --migrate",
     "review": "node scripts/review-best-practices.mjs",
-    "gate": "npm run lint && npm run typecheck && npm run test && npm run complexity && npm run comments"
+    "docs": "node --disable-warning=ExperimentalWarning scripts/docs/index.mjs",
+    "docs:check": "node scripts/docs/check.mjs",
+    "gate": "npm run lint && npm run typecheck && npm run test && npm run complexity && npm run comments && npm run docs:check"
   },
   "dependencies": {
     "@nestjs/authentication": "^0.1.7",

@@ -1,0 +1,100 @@
+{
+  "schema_version": 1,
+  "diagram_type": "tree",
+  "meta": {
+    "title": "Module map",
+    "subtitle": "Folders under src/, read from the file system",
+    "output": "docs/diagrams/module-map.html",
+    "locale": "en",
+    "quality_profile": "showcase",
+    "feedback_links": false
+  },
+  "layout": {
+    "direction": "down"
+  },
+  "nodes": [
+    {
+      "id": "src",
+      "label": "src/",
+      "sublabel": "NestJS application"
+    },
+    {
+      "id": "src_main_ts",
+      "label": "main.ts",
+      "parent": "src",
+      "sublabel": "Bootstraps the application and enables shutdown hooks"
+    },
+    {
+      "id": "src_app_module_ts",
+      "label": "app.module.ts",
+      "parent": "src",
+      "sublabel": "Wires configuration, database, observability, auth and the features"
+    },
+    {
+      "id": "src_features",
+      "label": "features/",
+      "parent": "src",
+      "sublabel": "One folder per business capability"
+    },
+    {
+      "id": "src_shared",
+      "label": "shared/",
+      "parent": "src",
+      "sublabel": "Code used by several features"
+    },
+    {
+      "id": "src_features_auth",
+      "label": "auth/",
+      "parent": "src_features",
+      "sublabel": "Sign-up, sign-in, tokens, members and the access policy"
+    },
+    {
+      "id": "src_features_metrics",
+      "label": "metrics/",
+      "parent": "src_features",
+      "sublabel": "Prometheus registry, middleware and GET /metrics"
+    },
+    {
+      "id": "src_features_professionals",
+      "label": "professionals/",
+      "parent": "src_features",
+      "sublabel": "Professionals CRUD"
+    },
+    {
+      "id": "src_features_services",
+      "label": "services/",
+      "parent": "src_features",
+      "sublabel": "Services CRUD"
+    },
+    {
+      "id": "src_features_units",
+      "label": "units/",
+      "parent": "src_features",
+      "sublabel": "Units CRUD"
+    },
+    {
+      "id": "src_features_users",
+      "label": "users/",
+      "parent": "src_features",
+      "sublabel": "User type, repository and GET /me"
+    },
+    {
+      "id": "src_shared_config",
+      "label": "config/",
+      "parent": "src_shared",
+      "sublabel": "Environment schema validated with Zod"
+    },
+    {
+      "id": "src_shared_database",
+      "label": "database/",
+      "parent": "src_shared",
+      "sublabel": "Drizzle schema and PostgreSQL error helpers"
+    },
+    {
+      "id": "src_shared_observe",
+      "label": "observe/",
+      "parent": "src_shared",
+      "sublabel": "NestJS Observe module and instrument"
+    }
+  ]
+}

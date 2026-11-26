@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "diagram_type": "sequence",
+  "meta": {
+    "title": "Create a unit with an access token",
+    "subtitle": "POST /units, from the bearer token to the inserted row",
+    "output": "docs/diagrams/create-unit-request.html",
+    "locale": "en",
+    "viewBox": [1080, 480],
+    "quality_profile": "showcase"
+  },
+  "participants": [
+    { "id": "client", "type": "external", "label": "API client", "sublabel": "bearer token" },
+    { "id": "api", "type": "backend", "label": "API", "sublabel": "Guards, then UnitsService" },
+    { "id": "auth", "type": "security", "label": "JWT provider", "sublabel": "JwtAuth" },
+    { "id": "db", "type": "database", "label": "PostgreSQL", "sublabel": "users and units" }
+  ],
+  "segments": [
+    { "from": 150, "to": 282, "label": "Authenticate" },
+    { "from": 292, "to": 366, "label": "Write" }
+  ],
+  "messages": [
+    { "id": "post-unit", "from": "client", "to": "api", "y": 160, "label": "POST /units", "variant": "emphasis" },
+    { "id": "verify", "from": "api", "to": "auth", "y": 188, "label": "verify JWT", "variant": "security" },
+    { "id": "load-user", "from": "auth", "to": "db", "y": 216, "label": "find user by sub", "variant": "default" },
+    { "id": "user-row", "from": "db", "to": "auth", "y": 244, "label": "user row", "variant": "return" },
+    { "id": "user", "from": "auth", "to": "api", "y": 272, "label": "user with tenantId and role", "variant": "return" },
+    { "id": "insert-unit", "from": "api", "to": "db", "y": 300, "label": "insert unit with caller tenantId", "variant": "emphasis" },
+    { "id": "unit-row", "from": "db", "to": "api", "y": 328, "label": "new unit row", "variant": "return" },
+    { "id": "created", "from": "api", "to": "client", "y": 356, "label": "201 Created", "variant": "return" }
+  ],
+  "activations": [
+    { "participant": "api", "from": 185, "to": 340, "type": "backend" },
+    { "participant": "auth", "from": 205, "to": 280, "type": "security" },
+    { "participant": "db", "from": 225, "to": 250, "type": "database" },
+    { "participant": "db", "from": 305, "to": 334, "type": "database" }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "Authentication",
+      "items": [
+        "The token proves the subject, and the user is loaded from PostgreSQL on every request",
+        "A deleted user therefore loses access even with an unexpired token",
+        "The role comes from the database, not from the token"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "Authorization",
+      "items": [
+        "AccessPolicy.manage allows only the admin role",
+        "A signed-in professional or client is refused before the service runs"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "Validation",
+      "items": [
+        "The body is validated against createUnitSchema before the handler runs",
+        "The unit receives the tenant of the loaded user, never a value from the body"
+      ]
+    }
+  ]
+}

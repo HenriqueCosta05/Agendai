@@ -1,6 +1,13 @@
 {
   "version": 2,
   "skills": {
+    "ai-readiness": {
+      "source": "GitbookIO/docs-skills",
+      "commit": "23a86ec1fbd6a2b5e0ed6fcc66c362a0f0e63465",
+      "sourceType": "github",
+      "skillPath": "skills/ai-readiness/SKILL.md",
+      "computedHash": "eb0d6169c4c92011c110e74d9de4b4a40984db9e646a0991665874ceae29e690"
+    },
     "clean-architecture": {
       "source": "ciembor/agent-rules-books",
       "commit": "893a88a6fce3a80c565bf39ac65021b43a8b2990",
@@ -22,6 +29,20 @@
       "skillPath": "domain-driven-design/SKILL.md",
       "computedHash": "7cde93eb959f0c99b08eff99d0c642fba31d36b871d07996c89ac10baca5e2a1"
     },
+    "humanizer": {
+      "source": "GitbookIO/docs-skills",
+      "commit": "23a86ec1fbd6a2b5e0ed6fcc66c362a0f0e63465",
+      "sourceType": "github",
+      "skillPath": "skills/humanizer/SKILL.md",
+      "computedHash": "29fcba8ba253041be2866bb908a4283c089b79122897c9088f175d96807b99ec"
+    },
+    "prerequisite-gap-checker": {
+      "source": "GitbookIO/docs-skills",
+      "commit": "23a86ec1fbd6a2b5e0ed6fcc66c362a0f0e63465",
+      "sourceType": "github",
+      "skillPath": "skills/prerequisite-gap-checker/SKILL.md",
+      "computedHash": "8023725cb52ed6fdf71b9b4f2855dfa465dbc24b623c8d584837809c6eebd2c9"
+    },
     "refactoring": {
       "source": "ciembor/agent-rules-books",
       "commit": "893a88a6fce3a80c565bf39ac65021b43a8b2990",
@@ -35,6 +56,20 @@
       "sourceType": "github",
       "skillPath": "refactoring-guru/SKILL.md",
       "computedHash": "ab508f9278d6ee2606675f8ce42eca3f748f48564109cabfaa26890847bfa77c"
+    },
+    "release-notes-writer": {
+      "source": "GitbookIO/docs-skills",
+      "commit": "23a86ec1fbd6a2b5e0ed6fcc66c362a0f0e63465",
+      "sourceType": "github",
+      "skillPath": "skills/release-notes-writer/SKILL.md",
+      "computedHash": "217864cc43dc19b9b6c33ec36c5df622a3a296b53ff25583a807a5f9b19e4155"
+    },
+    "seo-aeo-documentation": {
+      "source": "GitbookIO/docs-skills",
+      "commit": "23a86ec1fbd6a2b5e0ed6fcc66c362a0f0e63465",
+      "sourceType": "github",
+      "skillPath": "skills/seo-aeo-documentation/SKILL.md",
+      "computedHash": "358ed046eec43ad22338497a89aa1f93b8bb515c01e89defbe97c472f5655657"
     }
   }
 }
