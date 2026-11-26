@@ -51,11 +51,11 @@ The rules live in `AccessPolicy` (`features/auth/access.policy.ts`) and are appl
 | `units` | tenant_id, name, timezone |
 | `services` | tenant_id, duration_min, buffer_min, capacity (1 = individual) |
 | `professionals` | tenant_id, user_id, unit_id |
-| `schedules` | professional_id, weekday, start_time, end_time (local time) |
-| `time_off` | professional_id, period (`tstzrange`) |
+| `schedules` | tenant_id, professional_id, weekday, start_time, end_time (local time) |
+| `time_off` | tenant_id, professional_id, period (`tstzrange`) |
 | `bookings` | tenant_id, professional_id, client_id, period (`tstzrange`), status, idempotency_key |
 | `class_sessions` | tenant_id, service_id, period, capacity |
-| `waitlist_entries` | session_id, client_id, position, offered_at, expires_at |
+| `waitlist_entries` | tenant_id, session_id, client_id, position, offered_at, expires_at |
 | `outbox_events` | tenant_id, type, payload, status, attempts |
 | `refresh_tokens` | state of the refresh tokens kept by `@nestjs/authentication` |
 

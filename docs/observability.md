@@ -1,6 +1,11 @@
 # Observability
 
-The API exposes Prometheus metrics at `GET /metrics`, built with `@prometheus-io/client` (the successor of `prom-client`).
+Two complementary layers:
+
+- **NestJS Observe** (`@nestjs/observe`) sends traces, errors, logs and runtime metrics to [observe.nestjs.com](https://observe.nestjs.com). It is wired in `src/shared/observe/observe.ts`, registered in `AppModule` and passed to `NestFactory.create` in `src/main.ts`.
+- **Prometheus** metrics at `GET /metrics`, built with `@prometheus-io/client` (the successor of `prom-client`).
+
+To link the app to Observe, run `npx @nestjs/observe link` and approve the code in the browser. It writes `OBSERVE_APP_KEY` and `OBSERVE_APP_SECRET` to `.env`. Without them the API runs and sends nothing, and it logs a warning at startup. Production should get its own key pair, set through the environment rather than `.env`.
 
 ## Metrics
 

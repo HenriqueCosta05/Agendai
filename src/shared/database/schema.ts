@@ -108,6 +108,7 @@ export const schedules = pgTable(
   'schedules',
   {
     id: uuid('id').primaryKey().defaultRandom(),
+    tenantId: tenantId(),
     professionalId: uuid('professional_id')
       .notNull()
       .references(() => professionals.id, { onDelete: 'cascade' }),
@@ -116,6 +117,7 @@ export const schedules = pgTable(
     endTime: time('end_time').notNull(),
   },
   (table) => [
+    index('schedules_tenant_id_idx').on(table.tenantId),
     index('schedules_professional_id_idx').on(table.professionalId),
     check('schedules_weekday_range', sql`${table.weekday} BETWEEN 0 AND 6`),
     check('schedules_time_order', sql`${table.startTime} < ${table.endTime}`),
@@ -126,12 +128,16 @@ export const timeOff = pgTable(
   'time_off',
   {
     id: uuid('id').primaryKey().defaultRandom(),
+    tenantId: tenantId(),
     professionalId: uuid('professional_id')
       .notNull()
       .references(() => professionals.id, { onDelete: 'cascade' }),
     period: tstzrange('period').notNull(),
   },
-  (table) => [index('time_off_professional_id_idx').on(table.professionalId)],
+  (table) => [
+    index('time_off_tenant_id_idx').on(table.tenantId),
+    index('time_off_professional_id_idx').on(table.professionalId),
+  ],
 );
 
 export const bookings = pgTable(
@@ -178,6 +184,7 @@ export const waitlistEntries = pgTable(
   'waitlist_entries',
   {
     id: uuid('id').primaryKey().defaultRandom(),
+    tenantId: tenantId(),
     sessionId: uuid('session_id')
       .notNull()
       .references(() => classSessions.id, { onDelete: 'cascade' }),
@@ -189,6 +196,7 @@ export const waitlistEntries = pgTable(
     expiresAt: at('expires_at'),
   },
   (table) => [
+    index('waitlist_entries_tenant_id_idx').on(table.tenantId),
     unique('waitlist_session_client_uq').on(table.sessionId, table.clientId),
     unique('waitlist_session_position_uq').on(table.sessionId, table.position),
   ],

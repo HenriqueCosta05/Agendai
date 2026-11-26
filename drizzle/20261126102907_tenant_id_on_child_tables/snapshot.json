@@ -1,0 +1,373 @@
+{
+  "type": "diff",
+  "version": "10",
+  "dialect": "postgres",
+  "id": "80d9b0f1-9ec2-4e27-ad64-8e8588423215",
+  "prevIds": [
+    "6b63a83f-3529-4653-aa5e-b0e26d0e42e4"
+  ],
+  "footprints": [
+    {
+      "statementType": "add_column",
+      "statementTarget": [
+        "column",
+        "public",
+        "schedules",
+        "tenant_id"
+      ],
+      "writes": [
+        "s|col|public.schedules.tenant_id",
+        "n|col|public.schedules.tenant_id",
+        "e|col|public.schedules.tenant_id"
+      ],
+      "reads": [
+        "n|tbl|public.schedules",
+        "n|sch|public"
+      ]
+    },
+    {
+      "statementType": "add_column",
+      "statementTarget": [
+        "column",
+        "public",
+        "time_off",
+        "tenant_id"
+      ],
+      "writes": [
+        "s|col|public.time_off.tenant_id",
+        "n|col|public.time_off.tenant_id",
+        "e|col|public.time_off.tenant_id"
+      ],
+      "reads": [
+        "n|tbl|public.time_off",
+        "n|sch|public"
+      ]
+    },
+    {
+      "statementType": "add_column",
+      "statementTarget": [
+        "column",
+        "public",
+        "waitlist_entries",
+        "tenant_id"
+      ],
+      "writes": [
+        "s|col|public.waitlist_entries.tenant_id",
+        "n|col|public.waitlist_entries.tenant_id",
+        "e|col|public.waitlist_entries.tenant_id"
+      ],
+      "reads": [
+        "n|tbl|public.waitlist_entries",
+        "n|sch|public"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "schedules",
+        "schedules_tenant_id_idx"
+      ],
+      "writes": [
+        "s|idx|public.schedules_tenant_id_idx",
+        "n|idx|public.schedules_tenant_id_idx",
+        "e|idx|public.schedules_tenant_id_idx",
+        "n|rel|public.schedules_tenant_id_idx"
+      ],
+      "reads": [
+        "n|tbl|public.schedules",
+        "n|sch|public",
+        "n|col|public.schedules.tenant_id"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "time_off",
+        "time_off_tenant_id_idx"
+      ],
+      "writes": [
+        "s|idx|public.time_off_tenant_id_idx",
+        "n|idx|public.time_off_tenant_id_idx",
+        "e|idx|public.time_off_tenant_id_idx",
+        "n|rel|public.time_off_tenant_id_idx"
+      ],
+      "reads": [
+        "n|tbl|public.time_off",
+        "n|sch|public",
+        "n|col|public.time_off.tenant_id"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "waitlist_entries",
+        "waitlist_entries_tenant_id_idx"
+      ],
+      "writes": [
+        "s|idx|public.waitlist_entries_tenant_id_idx",
+        "n|idx|public.waitlist_entries_tenant_id_idx",
+        "e|idx|public.waitlist_entries_tenant_id_idx",
+        "n|rel|public.waitlist_entries_tenant_id_idx"
+      ],
+      "reads": [
+        "n|tbl|public.waitlist_entries",
+        "n|sch|public",
+        "n|col|public.waitlist_entries.tenant_id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "schedules"
+      ],
+      "writes": [
+        "s|fk|public.schedules.schedules_tenant_id_tenants_id_fkey",
+        "n|fk|public.schedules.schedules_tenant_id_tenants_id_fkey",
+        "e|fk|public.schedules.schedules_tenant_id_tenants_id_fkey",
+        "n|con|public.schedules.schedules_tenant_id_tenants_id_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.schedules",
+        "n|sch|public",
+        "n|tbl|public.tenants",
+        "n|sch|public",
+        "n|col|public.schedules.tenant_id",
+        "n|col|public.tenants.id",
+        "e|uniqueness|public.tenants.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "time_off"
+      ],
+      "writes": [
+        "s|fk|public.time_off.time_off_tenant_id_tenants_id_fkey",
+        "n|fk|public.time_off.time_off_tenant_id_tenants_id_fkey",
+        "e|fk|public.time_off.time_off_tenant_id_tenants_id_fkey",
+        "n|con|public.time_off.time_off_tenant_id_tenants_id_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.time_off",
+        "n|sch|public",
+        "n|tbl|public.tenants",
+        "n|sch|public",
+        "n|col|public.time_off.tenant_id",
+        "n|col|public.tenants.id",
+        "e|uniqueness|public.tenants.id"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "waitlist_entries"
+      ],
+      "writes": [
+        "s|fk|public.waitlist_entries.waitlist_entries_tenant_id_tenants_id_fkey",
+        "n|fk|public.waitlist_entries.waitlist_entries_tenant_id_tenants_id_fkey",
+        "e|fk|public.waitlist_entries.waitlist_entries_tenant_id_tenants_id_fkey",
+        "n|con|public.waitlist_entries.waitlist_entries_tenant_id_tenants_id_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.waitlist_entries",
+        "n|sch|public",
+        "n|tbl|public.tenants",
+        "n|sch|public",
+        "n|col|public.waitlist_entries.tenant_id",
+        "n|col|public.tenants.id",
+        "e|uniqueness|public.tenants.id"
+      ]
+    }
+  ],
+  "deltas": [
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "schedules",
+        "name": "tenant_id",
+        "type": "uuid",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "time_off",
+        "name": "tenant_id",
+        "type": "uuid",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "waitlist_entries",
+        "name": "tenant_id",
+        "type": "uuid",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "schedules",
+        "name": "schedules_tenant_id_idx",
+        "nameExplicit": true,
+        "columns": [
+          {
+            "value": "tenant_id",
+            "isExpression": false,
+            "asc": true,
+            "nullsFirst": false,
+            "opclass": null
+          }
+        ],
+        "isUnique": false,
+        "where": null,
+        "with": "",
+        "method": "btree",
+        "entityType": "indexes"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "time_off",
+        "name": "time_off_tenant_id_idx",
+        "nameExplicit": true,
+        "columns": [
+          {
+            "value": "tenant_id",
+            "isExpression": false,
+            "asc": true,
+            "nullsFirst": false,
+            "opclass": null
+          }
+        ],
+        "isUnique": false,
+        "where": null,
+        "with": "",
+        "method": "btree",
+        "entityType": "indexes"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "waitlist_entries",
+        "name": "waitlist_entries_tenant_id_idx",
+        "nameExplicit": true,
+        "columns": [
+          {
+            "value": "tenant_id",
+            "isExpression": false,
+            "asc": true,
+            "nullsFirst": false,
+            "opclass": null
+          }
+        ],
+        "isUnique": false,
+        "where": null,
+        "with": "",
+        "method": "btree",
+        "entityType": "indexes"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "schedules",
+        "name": "schedules_tenant_id_tenants_id_fkey",
+        "nameExplicit": false,
+        "columns": [
+          "tenant_id"
+        ],
+        "schemaTo": "public",
+        "tableTo": "tenants",
+        "columnsTo": [
+          "id"
+        ],
+        "onUpdate": "NO ACTION",
+        "onDelete": "CASCADE",
+        "entityType": "fks"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "time_off",
+        "name": "time_off_tenant_id_tenants_id_fkey",
+        "nameExplicit": false,
+        "columns": [
+          "tenant_id"
+        ],
+        "schemaTo": "public",
+        "tableTo": "tenants",
+        "columnsTo": [
+          "id"
+        ],
+        "onUpdate": "NO ACTION",
+        "onDelete": "CASCADE",
+        "entityType": "fks"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "waitlist_entries",
+        "name": "waitlist_entries_tenant_id_tenants_id_fkey",
+        "nameExplicit": false,
+        "columns": [
+          "tenant_id"
+        ],
+        "schemaTo": "public",
+        "tableTo": "tenants",
+        "columnsTo": [
+          "id"
+        ],
+        "onUpdate": "NO ACTION",
+        "onDelete": "CASCADE",
+        "entityType": "fks"
+      }
+    }
+  ]
+}

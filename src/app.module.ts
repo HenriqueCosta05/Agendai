@@ -12,9 +12,18 @@ import { ServicesModule } from './features/services/services.module.js';
 import { UnitsModule } from './features/units/units.module.js';
 import { UsersModule } from './features/users/users.module.js';
 import { validateEnv, type Env } from './shared/config/env.schema.js';
+import { ObserveModule } from './shared/observe/observe.js';
 
 @Module({
   imports: [
+    ObserveModule.forRootAsync({
+      inject: [ConfigService],
+      useFactory: (config: ConfigService<Env, true>) => ({
+        serviceId: 'agendai-api',
+        appKey: config.get('OBSERVE_APP_KEY', { infer: true }),
+        appSecret: config.get('OBSERVE_APP_SECRET', { infer: true }),
+      }),
+    }),
     ConfigModule.forRoot({ isGlobal: true, validate: validateEnv }),
     DrizzleModule.forRootAsync({
       inject: [ConfigService],
