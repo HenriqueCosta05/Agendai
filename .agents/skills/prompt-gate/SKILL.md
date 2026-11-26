@@ -38,4 +38,4 @@ When found:
 
 ## Step 4: Proceed
 
-Summarise the interpretation in one line (`Goal / Scope / Done when`), flag any sensitive-data finding, then do the work. The PreToolUse and PostToolUse hooks enforce lint, types, tests, complexity, comment limits and security rules afterwards.
+Summarise the interpretation in one line (`Goal / Scope / Done when`), flag any sensitive-data finding, then do the work. The pre-write and post-write hooks enforce lint, types, tests, complexity, comment limits and security rules afterwards.

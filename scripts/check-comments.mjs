@@ -56,6 +56,7 @@ const args = process.argv.slice(2);
 if (args[0] === '--stdin') {
   const relPath = args[1] ?? 'unknown.ts';
   const payload = JSON.parse(readFileSync(0, 'utf8'));
+  if (!/\.(m|c)?[jt]sx?$/.test(relPath)) process.exit(0);
   const input = payload.tool_input ?? {};
   const snippets = [input.content, input.new_string, ...(input.edits ?? []).map((e) => e.new_string)].filter(
     (s) => typeof s === 'string',

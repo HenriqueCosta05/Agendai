@@ -1,0 +1,40 @@
+{
+  "version": 2,
+  "skills": {
+    "clean-architecture": {
+      "source": "ciembor/agent-rules-books",
+      "commit": "893a88a6fce3a80c565bf39ac65021b43a8b2990",
+      "sourceType": "github",
+      "skillPath": "clean-architecture/SKILL.md",
+      "computedHash": "1d8853dd20056026676ac7b30455fc540aeb6f018c7d6aefdd9287014297eca6"
+    },
+    "clean-code": {
+      "source": "ciembor/agent-rules-books",
+      "commit": "893a88a6fce3a80c565bf39ac65021b43a8b2990",
+      "sourceType": "github",
+      "skillPath": "clean-code/SKILL.md",
+      "computedHash": "710cc96e8e8d8c0553ba3ee4be008ad253ded54e5737535a8257a3494452f214"
+    },
+    "domain-driven-design": {
+      "source": "ciembor/agent-rules-books",
+      "commit": "893a88a6fce3a80c565bf39ac65021b43a8b2990",
+      "sourceType": "github",
+      "skillPath": "domain-driven-design/SKILL.md",
+      "computedHash": "7cde93eb959f0c99b08eff99d0c642fba31d36b871d07996c89ac10baca5e2a1"
+    },
+    "refactoring": {
+      "source": "ciembor/agent-rules-books",
+      "commit": "893a88a6fce3a80c565bf39ac65021b43a8b2990",
+      "sourceType": "github",
+      "skillPath": "refactoring/SKILL.md",
+      "computedHash": "1ac6df461320cc390cb6f67cbf5a0f1bac73c79367ea897b44dc60d229ddcd71"
+    },
+    "refactoring-guru": {
+      "source": "ciembor/agent-rules-books",
+      "commit": "893a88a6fce3a80c565bf39ac65021b43a8b2990",
+      "sourceType": "github",
+      "skillPath": "refactoring-guru/SKILL.md",
+      "computedHash": "ab508f9278d6ee2606675f8ce42eca3f748f48564109cabfaa26890847bfa77c"
+    }
+  }
+}
