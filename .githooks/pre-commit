@@ -3,6 +3,11 @@ set -eu
 
 cd "$(git rev-parse --show-toplevel)"
 
+# Per-machine renderer settings, such as the browser path. Optional and not committed.
+if [ -f .githooks/local.env ]; then
+  . .githooks/local.env
+fi
+
 node_works() { command -v node >/dev/null 2>&1 && node -v >/dev/null 2>&1; }
 
 if ! node_works; then

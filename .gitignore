@@ -61,3 +61,8 @@ report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 # Archify receipts and delivery records, which hold absolute paths and timestamps
 docs/diagrams/.archify/
 docs/diagrams/*.delivery.json
+
+# Per-machine documentation renderer settings (browser path)
+.githooks/local.env
+
+.delta

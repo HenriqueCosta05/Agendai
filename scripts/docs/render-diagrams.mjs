@@ -1,5 +1,5 @@
 // Writes the Archify candidates that follow from the code, then renders every candidate to HTML and SVG.
-import { execFileSync } from 'node:child_process';
+import { execFileSync, spawnSync } from 'node:child_process';
 import { existsSync, readFileSync, readdirSync, rmSync, statSync, writeFileSync } from 'node:fs';
 import { homedir } from 'node:os';
 import { basename, join } from 'node:path';
@@ -172,19 +172,33 @@ function clearReceipts(stem) {
   }
 }
 
-function finalize(cli, candidate, output) {
-  const { diagram_type: type, meta } = JSON.parse(readFileSync(candidate, 'utf8'));
-  clearReceipts(basename(output, '.html'));
-  const args = [cli, 'finalize', type, candidate, output, '--quality', meta.quality_profile, '--out-dir', RECEIPTS, '--json'];
+const CHROME_NAMES = ['chrome-headless-shell', 'chromium', 'chromium-browser', 'google-chrome', 'google-chrome-stable', 'msedge'];
+
+// Archify needs a browser for its browser-check and for SVG export. Without one, the HTML is still delivered.
+function chromeAvailable() {
+  if (process.env.ARCHIFY_CHROME) return true;
+  return CHROME_NAMES.some((name) => spawnSync('sh', ['-c', `command -v ${name}`], { stdio: 'ignore' }).status === 0);
+}
+
+function archifyJson(cli, args) {
   let stdout;
   try {
-    stdout = execFileSync(process.execPath, args, { cwd: ROOT, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] });
+    stdout = execFileSync(process.execPath, [cli, ...args], { cwd: ROOT, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] });
   } catch (error) {
     stdout = error.stdout;
   }
-  const receipt = JSON.parse(stdout);
+  return JSON.parse(stdout);
+}
+
+function render(cli, candidate, output, browser) {
+  const { diagram_type: type, meta } = JSON.parse(readFileSync(candidate, 'utf8'));
+  clearReceipts(basename(output, '.html'));
+  const args = browser
+    ? ['finalize', type, candidate, output, '--quality', meta.quality_profile, '--out-dir', RECEIPTS, '--json']
+    : ['deliver', type, candidate, output, '--quality', meta.quality_profile, '--no-update-notice', '--json'];
+  const receipt = archifyJson(cli, args);
   if (!receipt.ok) {
-    throw new Error(`archify finalize failed for ${candidate} at ${receipt.failedStage}: ${JSON.stringify(receipt.diagnostics)}`);
+    throw new Error(`archify ${args[0]} failed for ${candidate} at ${receipt.failedStage}: ${JSON.stringify(receipt.diagnostics)}`);
   }
 }
 
@@ -207,10 +221,14 @@ export function renderDiagrams(tables) {
     console.warn('docs: Archify not found (set ARCHIFY_HOME). Candidates were written, HTML and SVG were not rendered.');
     return;
   }
+  const browser = chromeAvailable();
+  if (!browser) {
+    console.warn('docs: no Chrome or Chromium found (set ARCHIFY_CHROME). HTML is delivered without the browser check and SVG files are kept as they were.');
+  }
   for (const file of readdirSync(SRC).filter((f) => f.endsWith('.json')).sort()) {
     const stem = file.replace(/\.[a-z]+\.json$/, '');
     const html = join(OUT, `${stem}.html`);
-    finalize(cli, join(SRC, file), html);
-    exportSvg(cli, html, join(OUT, `${stem}.svg`));
+    render(cli, join(SRC, file), html, browser);
+    if (browser) exportSvg(cli, html, join(OUT, `${stem}.svg`));
   }
 }
