@@ -13,7 +13,7 @@ Implemented:
 - Prometheus metrics at `GET /metrics`
 - Full data model, including bookings, class sessions, waitlist and outbox tables
 
-Not implemented yet: the booking, availability, waitlist and outbox logic. Those tables exist in the schema (see [docs/architecture.md](docs/architecture.md)) but have no endpoints.
+Availability of individual services is implemented (`GET /units/:id/availability`). Not implemented yet: the booking, waitlist and outbox logic. Those tables exist in the schema (see [docs/architecture.md](docs/architecture.md)) but have no endpoints.
 
 ## Quick start (Docker Compose)
 

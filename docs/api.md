@@ -77,6 +77,39 @@ curl -s "$API/units" -H "authorization: Bearer $ACCESS_TOKEN"
 
 `PATCH` on units and services accepts the same fields, all optional. `PATCH` on professionals takes only `unitId`, which is required.
 
+## Availability
+
+`GET /units/:id/availability?from=YYYY-MM-DD&to=YYYY-MM-DD` returns the free slots of each individual service (capacity 1) in the unit. Both dates are local to the unit's timezone and included. The range can cover at most 31 days.
+
+```bash
+curl -s "$API/units/$UNIT_ID/availability?from=2026-03-02&to=2026-03-02" -H "authorization: Bearer $ACCESS_TOKEN"
+```
+
+Each service lists its slots, one per professional and start time, with `startsAt` and `endsAt` in UTC. `endsAt` is the end of the service, and the buffer after it is not included.
+
+```json
+[
+  {
+    "serviceId": "...",
+    "serviceName": "Haircut",
+    "durationMin": 50,
+    "bufferMin": 10,
+    "slots": [
+      { "professionalId": "...", "startsAt": "2026-03-02T12:00:00.000Z", "endsAt": "2026-03-02T12:50:00.000Z" }
+    ]
+  }
+]
+```
+
+The rules:
+
+- A professional's weekly schedule gives the working windows, read in the unit's timezone.
+- Slots follow each other every `durationMin + bufferMin` minutes, starting at the beginning of each window. A 09:00 to 12:00 window with a 50 minute service and a 10 minute buffer gives 09:00, 10:00 and 11:00.
+- A slot is offered only when its service and buffer both fit inside the window.
+- A slot is blocked when it overlaps the professional's time off, or a booking that is `pending` or `confirmed`. The booking's period must cover its service and buffer.
+- Slots of one professional never block another professional.
+- Slots in the past are not filtered out yet.
+
 ## Metrics
 
 `GET /metrics` is public and returns the Prometheus text format. See [Observability](observability.md) for what it reports, and for why it should stay on an internal network.

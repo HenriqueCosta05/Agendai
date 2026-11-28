@@ -14,6 +14,7 @@ All notable changes to this project are documented here. The format follows [Kee
 - Role-based authorization (`admin`, `professional`, `client`): everyone signed in can read, only admins can write.
 - `POST /auth/sign-up` creates a tenant and its first admin. `POST /members` lets an admin add users.
 - CRUD endpoints for units, services and professionals, scoped to the caller's tenant.
+- `GET /units/:id/availability` returns the free slots of each individual service for a date range, from weekly schedules, time off and active bookings, with the service duration plus buffer.
 - Prometheus metrics at `GET /metrics`: HTTP request count and duration by method, route and status, plus Node.js process metrics.
 - Prometheus service in Docker Compose, scraping the API every 15 seconds.
 - NestJS Observe SDK (`@nestjs/observe`) registered in `AppModule` and passed to `NestFactory.create`. Keys come from `OBSERVE_APP_KEY` and `OBSERVE_APP_SECRET`.

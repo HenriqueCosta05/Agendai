@@ -58,4 +58,4 @@ The rules live in `AccessPolicy` (`src/features/auth/access.policy.ts`). A signe
 
 ## Current scope
 
-The API covers sign-up and sign-in, members, and the CRUD endpoints for units, services and professionals. The tables for schedules, time off, bookings, class sessions, the waitlist and the outbox already exist. No endpoint or background process writes to them yet. The [API](api.md) page lists what is available today.
+The API covers sign-up and sign-in, members, the CRUD endpoints for units, services and professionals, and the availability of individual services in a unit. The tables for schedules, time off, bookings, class sessions, the waitlist and the outbox already exist. No endpoint writes to schedules, time off or bookings yet, so they are filled directly in the database for now. The [API](api.md) page lists what is available today.

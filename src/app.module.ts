@@ -6,6 +6,7 @@ import { AuthorizationModule } from '@nestjs/authorization';
 import { DrizzleModule } from '@nestjs/drizzle';
 import { drizzle } from 'drizzle-orm/node-postgres';
 import { AuthModule } from './features/auth/auth.module.js';
+import { AvailabilityModule } from './features/availability/availability.module.js';
 import { MetricsModule } from './features/metrics/metrics.module.js';
 import { ProfessionalsModule } from './features/professionals/professionals.module.js';
 import { ServicesModule } from './features/services/services.module.js';
@@ -48,6 +49,7 @@ import { ObserveModule } from './shared/observe/observe.js';
     UsersModule,
     AuthModule,
     UnitsModule,
+    AvailabilityModule,
     ServicesModule,
     ProfessionalsModule,
     MetricsModule,

@@ -32,3 +32,4 @@ The access column names who may call the endpoint. `public` needs no token. `any
 | DELETE | `/units/:id` | admin | 204 | None | `units.controller.remove` |
 | GET | `/units/:id` | any signed-in user | 200 | None | `units.controller.get` |
 | PATCH | `/units/:id` | admin | 200 | `updateUnitSchema` | `units.controller.update` |
+| GET | `/units/:id/availability` | any signed-in user | 200 | None | `availability.controller.availability` |

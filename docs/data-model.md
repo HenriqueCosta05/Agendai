@@ -57,7 +57,9 @@ Deleting a professional removes its schedules and time-off periods. Deleting a s
 
 ## Booking statuses
 
-The `booking_status` enum has five values: `pending`, `confirmed`, `cancelled`, `completed` and `no_show`. No code sets these values yet. The transitions between them belong to the availability and booking work, which is not built yet.
+The `booking_status` enum has five values: `pending`, `confirmed`, `cancelled`, `completed` and `no_show`. No code sets these values yet. The availability endpoint reads `pending` and `confirmed` as busy time. The transitions between them belong to the booking work, which is not built yet.
+
+A booking's `period` must cover its service and its buffer. The table does not store the service, so availability cannot add the buffer itself.
 
 ## Where to go next
 
