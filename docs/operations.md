@@ -15,7 +15,7 @@ Docker Compose defines four services. The `migrate` service and the `api` servic
 | `db` | `postgres:17.12-alpine` | PostgreSQL with the `pgdata` volume. | `127.0.0.1:5432` |
 | `migrate` | `Dockerfile`, target `migrate` | Runs `drizzle-kit migrate` once, then exits. | None |
 | `api` | `Dockerfile`, target `runtime` | The NestJS API on port 3000. | `3000:3000`, all interfaces |
-| `prometheus` | `prom/prometheus:v3.7.0` | Scrapes `api:3000/metrics` every 15 seconds. | `127.0.0.1:9090` |
+| `prometheus` | `prom/prometheus:v3.7.0` | Scrapes `api:3000/metrics` every 15 seconds and evaluates `prometheus/alerts.yml`. | `127.0.0.1:9090` |
 
 The `api` service starts only after `migrate` succeeds, and `migrate` starts only after `db` reports healthy.
 
@@ -28,6 +28,8 @@ docker compose up --build
 ```
 
 Compose reads `POSTGRES_USER`, `POSTGRES_PASSWORD`, `POSTGRES_DB`, `DOCKER_DATABASE_URL` and `JWT_SECRET` from `.env`, and stops with an error when one of them is missing. Use `docker compose down` to stop the stack. Add `-v` to delete the database and Prometheus volumes as well.
+
+The database password is set only when the `pgdata` volume is first created. Changing `POSTGRES_PASSWORD` or `DOCKER_DATABASE_URL` later does not change the stored password, so the `migrate` service fails with `password authentication failed`. Either restore the old password, or run `docker compose down -v` to delete the data and start again. See [Observability](observability.md#troubleshooting) for the Prometheus side.
 
 ## The image
 

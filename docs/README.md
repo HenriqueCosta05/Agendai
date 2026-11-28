@@ -16,6 +16,7 @@ Agendai is a multi-tenant scheduling API for clinics. Each clinic is a tenant, a
 | [API](api.md) | Call the endpoints with examples, and read the error responses. |
 | [Operations](operations.md) | Run the Docker Compose stack, apply migrations and configure the environment. |
 | [Observability](observability.md) | Read the Prometheus metrics and connect the NestJS Observe telemetry. |
+| [Monitoring queries](monitoring.md) | Query request traffic, errors, latency and Node.js processing in Prometheus. |
 | [Development](development.md) | Set up a workstation, run the quality gate and regenerate these docs. |
 
 ## Generated reference
