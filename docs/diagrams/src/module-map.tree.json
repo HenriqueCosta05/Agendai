@@ -49,6 +49,11 @@
       "sublabel": "Sign-up, sign-in, tokens, members and the access policy"
     },
     {
+      "id": "src_features_availability",
+      "label": "availability/",
+      "parent": "src_features"
+    },
+    {
       "id": "src_features_metrics",
       "label": "metrics/",
       "parent": "src_features",
